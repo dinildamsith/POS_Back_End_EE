@@ -50,4 +50,23 @@ public class ItemDB {
             e.printStackTrace();
         }
     }
+
+
+    String DELETE_ITEM = "DELETE FROM item WHERE item_id = ?";
+    public void deleteItem(ItemDTO itemDTO,Connection connection){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ITEM);
+            preparedStatement.setString(1,itemDTO.getItem_Id());
+            if (preparedStatement.executeUpdate() !=0){
+                logger.info("Delete Item");
+            }else{
+                logger.info("Not Delete Item");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
