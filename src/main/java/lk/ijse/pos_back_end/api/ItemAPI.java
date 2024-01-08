@@ -45,4 +45,10 @@ public class ItemAPI extends HttpServlet {
         ItemDTO itemDTO = jsonb.fromJson(req.getReader(),ItemDTO.class);
         itemDB.saveItem(itemDTO,connection);
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ItemDTO itemDTO = jsonb.fromJson(req.getReader(),ItemDTO.class);
+        itemDB.updateItem(itemDTO,connection);
+    }
 }

@@ -31,4 +31,23 @@ public class ItemDB {
             e.printStackTrace();
         }
     }
+
+    String UPDATE_ITEM = "UPDATE Item SET item.item_description = ?,item.item_unitPrice = ?,item.item_qty = ? WHERE item.item_id =?";
+    public void updateItem(ItemDTO itemDTO,Connection connection){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ITEM);
+            preparedStatement.setString(1,itemDTO.getItem_Name());
+            preparedStatement.setDouble(2,itemDTO.getItem_Price());
+            preparedStatement.setInt(3,itemDTO.getItem_Qty());
+            preparedStatement.setString(4,itemDTO.getItem_Id());
+
+            if (preparedStatement.executeUpdate() !=0){
+                logger.info("Update Item");
+            }else {
+                logger.info("Not Update Item");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
