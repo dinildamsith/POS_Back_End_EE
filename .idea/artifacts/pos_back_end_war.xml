@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="pos_back_end:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>pos_back_end</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="pos_back_end-1.0.0.war">
+      <element id="artifact" artifact-name="pos_back_end:war exploded" />
+    </root>
+  </artifact>
+</component>

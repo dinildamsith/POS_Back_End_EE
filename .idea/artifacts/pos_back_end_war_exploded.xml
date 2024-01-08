@@ -1,0 +1,38 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="pos_back_end:war exploded">
+    <output-path>$PROJECT_DIR$/target/pos_back_end-1.0.0</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>pos_back_end</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="pos_back_end" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.mysql:mysql-connector-j:8.2.0" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.21.9" />
+          <element id="library" level="project" name="Maven: org.eclipse:yasson:2.0.4" />
+          <element id="library" level="project" name="Maven: jakarta.json.bind:jakarta.json.bind-api:2.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.json:jakarta.json-api:2.0.0" />
+          <element id="library" level="project" name="Maven: org.glassfish:jakarta.json:module:2.0.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.32" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.6" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.2.6" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/pos_back_end-1.0.0/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="pos_back_end/web/Web" />
+    </root>
+  </artifact>
+</component>
