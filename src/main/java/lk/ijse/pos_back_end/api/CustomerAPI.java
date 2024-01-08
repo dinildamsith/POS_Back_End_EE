@@ -1,6 +1,7 @@
 package lk.ijse.pos_back_end.api;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -30,6 +31,7 @@ public class CustomerAPI extends HttpServlet {
 
     private static Logger logger = LoggerFactory.getLogger(CustomerAPI.class);
     CustomerDB customerDB = new CustomerDB();
+    Jsonb jsonb = JsonbBuilder.create();
     Connection connection;
 
 
@@ -50,7 +52,6 @@ public class CustomerAPI extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(),CustomerDTO.class);
         customerDB.saveCustomer(customerDTO ,connection);
 
@@ -58,54 +59,23 @@ public class CustomerAPI extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(),CustomerDTO.class);
         customerDB.updateCustomer(customerDTO,connection);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDTO = jsonb.fromJson(req.getReader(),CustomerDTO.class);
         customerDB.deleteCustomer(customerDTO,connection);
     }
 
 
-    String GET_ALL_CUSTOMER = "SELECT * FROM CUSTOMER";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json"); // Set content type to JSON
         PrintWriter writer = resp.getWriter();
+        String allCustomer = customerDB.getAllCustomer(connection, resp);
+        writer.println(allCustomer);
 
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CUSTOMER);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            ArrayList<CustomerDTO> allCustomer = new ArrayList<>();
-
-            while (resultSet.next()){
-
-                CustomerDTO customerDTO = new CustomerDTO();
-
-                customerDTO.setCustomer_Id(resultSet.getString(1));
-                customerDTO.setCustomer_Name(resultSet.getString(2));
-                customerDTO.setCustomer_Mail(resultSet.getString(3));
-                customerDTO.setCustomer_Address(resultSet.getString(4));
-                customerDTO.setCustomer_Gender(resultSet.getString(5));
-
-                allCustomer.add(customerDTO);
-
-            }
-            System.out.println(allCustomer);
-            // Convert the list of customers to JSON using Jackson ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
-            String allCustomerJson = objectMapper.writeValueAsString(allCustomer);
-
-            // Write the JSON data to the response
-            writer.println(allCustomerJson);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
