@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -56,5 +57,12 @@ public class ItemAPI extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ItemDTO itemDTO = jsonb.fromJson(req.getReader(),ItemDTO.class);
         itemDB.deleteItem(itemDTO,connection);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        String allItems = itemDB.getAllItems(connection, resp);
+        writer.println(allItems);
     }
 }
