@@ -20,24 +20,30 @@ public class OrderDB {
 
     private static Logger logger = LoggerFactory.getLogger(OrderDB.class);
 
-    String GET_LAST_ORDER_ID = "SELECT order_Id FROM order_details ORDER BY order_Id DESC LIMIT 1";
-    public String getLastOrderId(Connection connection, HttpServletResponse resp){
+    String GET_ALL_ORDERS = "SELECT * FROM order_details";
+    public String getAllOrders(Connection connection, HttpServletResponse resp){
         resp.setContentType("application/json"); // Set content type to JSON
 
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_LAST_ORDER_ID);
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_ORDERS);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            ArrayList<String> lastOrderId = new ArrayList<>();
+            ArrayList<OrderDTO> getAllOrders = new ArrayList<>();
 
             while (resultSet.next()){
-                lastOrderId.add(resultSet.getString(1));
+                OrderDTO orderDTO = new OrderDTO();
+                orderDTO.setOrder_Id(resultSet.getString(1));
+                orderDTO.setCustomer_Id(resultSet.getString(2));
+                orderDTO.setDate(resultSet.getString(3));
+
+                getAllOrders.add(orderDTO);
             }
+
 
             // Convert the list of customers to JSON using Jackson ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
-            String lastOrder_Id_Json = objectMapper.writeValueAsString(lastOrderId);
-            return lastOrder_Id_Json;
+            String getAllOrders_Json = objectMapper.writeValueAsString(getAllOrders);
+            return getAllOrders_Json;
 
         } catch (SQLException | JsonProcessingException e) {
             e.printStackTrace();
@@ -77,6 +83,24 @@ public class OrderDB {
 
 
 
+    }
+
+    String DELETE_ORDER = "DELETE FROM order_details WHERE order_id = ?";
+    public void deleteOrderDetails(OrderDTO orderDTO,Connection connection){
+        System.out.println(orderDTO.getOrder_Id());
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ORDER);
+            preparedStatement.setString(1,orderDTO.getOrder_Id());
+
+            if (preparedStatement.executeUpdate() !=0){
+                logger.info("Delete");
+            }else{
+                logger.info("Not Delete");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -47,7 +47,7 @@ public class OrderAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
-        String lastOrderId = orderDB.getLastOrderId(connection, resp);
+        String lastOrderId = orderDB.getAllOrders(connection, resp);
         writer.println(lastOrderId);
 
     }
@@ -59,5 +59,12 @@ public class OrderAPI extends HttpServlet {
         orderDB.setOrderDetails(orderDTO,connection);
 
 
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        OrderDTO orderDTO = jsonb.fromJson(req.getReader(),OrderDTO.class);
+        System.out.println(orderDTO);
+        orderDB.deleteOrderDetails(orderDTO,connection);
     }
 }
