@@ -67,6 +67,7 @@ public class OrderDB {
             preparedStatement.setString(2, orderDTO.getCustomer_Id());
             preparedStatement.setString(3, orderDTO.getDate());
 
+            logger.info("Save Order Details");
             // Execute the first query
             preparedStatement.executeUpdate();
 
@@ -78,7 +79,7 @@ public class OrderDB {
 
             // Execute the second query
             preparedStatement1.executeUpdate();
-
+            logger.info("Place Order");
             // If everything is successful, commit the transaction
             connection.commit();
         } catch (Exception e) {
