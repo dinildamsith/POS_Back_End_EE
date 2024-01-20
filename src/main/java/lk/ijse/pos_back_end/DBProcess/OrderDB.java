@@ -58,30 +58,44 @@ public class OrderDB {
     @SneakyThrows
     public void setOrderDetails(OrderDTO orderDTO, Connection connection){
 
-        System.out.println(orderDTO);
-        PreparedStatement preparedStatement = connection.prepareStatement(SAVE_ORDER_DETAILS);
-        preparedStatement.setString(1,orderDTO.getOrder_Id());
-        preparedStatement.setString(2,orderDTO.getCustomer_Id());
-        preparedStatement.setString(3,orderDTO.getDate());
+        try {
+            // Disable auto-commit to start a transaction
+            connection.setAutoCommit(false);
 
-        if (preparedStatement.executeUpdate() !=0){
-            logger.info("Save");
+            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_ORDER_DETAILS);
+            preparedStatement.setString(1, orderDTO.getOrder_Id());
+            preparedStatement.setString(2, orderDTO.getCustomer_Id());
+            preparedStatement.setString(3, orderDTO.getDate());
+
+            // Execute the first query
+            preparedStatement.executeUpdate();
+
             PreparedStatement preparedStatement1 = connection.prepareStatement(PLACE_ORDER);
-            preparedStatement1.setString(1,orderDTO.getOrder_Id());
-            preparedStatement1.setString(2,orderDTO.getItem_Name());
-            preparedStatement1.setInt(3,orderDTO.getQty());
-            preparedStatement1.setDouble(4,orderDTO.getTotal());
+            preparedStatement1.setString(1, orderDTO.getOrder_Id());
+            preparedStatement1.setString(2, orderDTO.getItem_Name());
+            preparedStatement1.setInt(3, orderDTO.getQty());
+            preparedStatement1.setDouble(4, orderDTO.getTotal());
 
-            if (preparedStatement1.executeUpdate() !=0){
-                logger.info("Save");
-            }else {
-                logger.info("Not Save");
+            // Execute the second query
+            preparedStatement1.executeUpdate();
+
+            // If everything is successful, commit the transaction
+            connection.commit();
+        } catch (Exception e) {
+            // If any exception occurs, rollback the transaction
+            connection.rollback();
+            e.printStackTrace();
+        } finally {
+            // Always reset auto-commit to true and close resources in the 'finally' block
+            try {
+                if (connection != null) {
+                    connection.setAutoCommit(true);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }else{
-
         }
-
-
 
     }
 
