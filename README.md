@@ -12,7 +12,7 @@ This JavaEE-based Point of Sale (POS) System API provides a simple and efficient
 
 ## How to Use
 
-1. Clone the repository. `https://github.com/viniduminsara/JavaEE_POS_Backend.git`
+1. Clone the repository. 
 2. Set up your JakarthaEE environment.
 3. Run Tomcat server.`version 10.1.16 or later`
 4. Deploy project artifact in Tomcat server.
